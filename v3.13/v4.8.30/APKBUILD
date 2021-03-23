@@ -1,0 +1,40 @@
+# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+pkgname=db
+pkgver=4.8.30
+_ver=${pkgver}
+pkgrel=0
+pkgdesc="The Berkeley DB embedded database system 4.8"
+url="http://www.oracle.com/technology/software/products/berkeley-db/index.html"
+arch="all"
+license="custom"
+depends=
+makedepends=
+subpackages="$pkgname-dev $pkgname-doc"
+source="https://download.oracle.com/berkeley-db/db-$pkgver.tar.gz
+	"
+
+build () { 
+	cd "$srcdir"/db-$_ver
+
+	cd build_unix
+	../dist/configure --prefix=/usr \
+		--mandir=/usr/share/man \
+		--enable-compat185 \
+		--enable-shared \
+		--disable-static \
+		--disable-cxx
+	make LIBSO_LIBS=-lpthread || return 1
+}
+
+package() {
+	cd "$srcdir"/db-$_ver/build_unix
+	make DESTDIR="$pkgdir" install
+
+	mkdir -p "$pkgdir"/usr/share/doc
+	mv "$pkgdir"/usr/docs "$pkgdir"/usr/share/doc/$pkgname
+
+	install -D -m644 "$srcdir"/db-$_ver/LICENSE \
+		"$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+sha512sums="d1a3c52b0ab54ae3fd6792e6396c9f74d25f36b2eb9e853b67ef9c872508a58c784c7818108d06d184f59601b70cc877916e67dfea6f0ee1ca2b07468c1041f1  db-4.8.30.tar.gz"
