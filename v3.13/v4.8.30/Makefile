@@ -11,7 +11,7 @@ PUB_KEY ?= $(WORKDIR)/../../keys/builder.rsa.pub
 
 .PHONY: build
 build:
-	docker run --rm -it \
+	docker run --rm \
 		-e PACKAGER_PRIVKEY=/home/builder/.abuild/builder.rsa \
 		-v $(WORKDIR)/APKBUILD:/apk-builder/APKBUILD \
 		-v $(WORKDIR)/atomic.patch:/apk-builder/atomic.patch \
@@ -29,5 +29,6 @@ shell:
 		-v `pwd`:/apk-builder \
 		-v `pwd`/../../keys/builder.rsa:/home/builder/.abuild/builder.rsa \
 		-v `pwd`/../../keys/builder.rsa.pub:/home/builder/.abuild/builder.rsa.pub \
+		-v `pwd`/../../keys/builder.rsa.pub:/etc/apk/keys/builder.rsa.pub \
 		-v `pwd`/packages:/home/builder/packages \
 		$(IMAGE)

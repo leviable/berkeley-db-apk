@@ -18,5 +18,12 @@ jobs:
       -
         name: Build
         run: |
-          make -C v3.13/v4.8.30 \
-            build
+          mkdir -p keys
+          echo "${{ secrets.BUILDER_RSA }}" > keys/builder.rsa
+          echo "${{ secrets.BUILDER_RSA_PUB }}" }} > keys/builder.rsa.pub
+          make -C v3.13/v4.8.30 build
+      -
+        uses: actions/upload-artifact@v2
+        with:
+          name: bdv-3.13
+          path: v3.13/v4.8.30/packages/x86_64

@@ -1,3 +1,4 @@
 #!/bin/sh -l
 
-abuild -r
+sudo chmod a+rwx /home/builder/packages
+abuild -r -c -q
