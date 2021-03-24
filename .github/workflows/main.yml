@@ -25,5 +25,26 @@ jobs:
       -
         uses: actions/upload-artifact@v2
         with:
-          name: bdv-3.13
+          name: bd-3.13
           path: v3.13/v4.8.30/packages/x86_64
+  cut_release:
+    name: Cut Release
+    runs-on: ubuntu-20.04
+    needs: v3_13
+    steps:
+      -
+        uses: actions/download-artifact@v2
+        name: Download Artifacts
+      -
+        name: Print Artifacts
+        run: ls -al
+      -
+        name: Cut Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            bd-*/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
