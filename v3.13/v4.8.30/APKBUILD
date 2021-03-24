@@ -16,6 +16,9 @@ source="https://download.oracle.com/berkeley-db/db-$pkgver.tar.gz
 build () { 
 	cd "$srcdir"/db-$_ver
 
+    msg "Applying atomic.patch..."
+    patch -p0 < /apk-builder/atomic.patch
+
 	cd build_unix
 	../dist/configure --prefix=/usr \
 		--mandir=/usr/share/man \

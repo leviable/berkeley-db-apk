@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v[0-9]+
+
+name: Berkeley DB 4.8 APKs
+
+jobs:
+  v3_13:
+    name: v3.13
+    runs-on: ubuntu-20.04
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Build
+        run: |
+          make -C v3.13/v4.8.30 \
+            build
